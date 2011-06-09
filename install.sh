@@ -11,11 +11,11 @@ for file in `find .`; do
   if [[ $file =~ .git/ ]]; then continue; fi
   if [[ $file =~ .gitignore ]]; then continue; fi
 
-  versioned=$(readlink -f "$file")
+  versioned=$(readlink "$file")
   echo "Checking $versioned"
 
   original=${versioned/#$PWD/~}
-  canonical_original=$(readlink -m "$original")
+  canonical_original=$(readlink "$original")
 
   if [[ $versioned == $canonical_original ]]; then
     echo "Symlink already installed."
@@ -27,16 +27,17 @@ for file in `find .`; do
     # should show a diff and give the option of bailing
     backup="$canonical_original.$NOW.bak"
     echo "Moving $canonical_original to $backup"
-    $(mv $canonical_original $backup)
+    #$(mv $canonical_original $backup)
   fi
 
   dir=$(dirname $canonical_original)
   if [[ -d $dir ]]; then
-    $(mkdir -p $dir)
+    echo ""
+    #$(mkdir -p $dir)
   fi
 
   echo "Linking $canonical_original to $versioned"
-  $(ln -s $versioned $canonical_original)
+  #$(ln -s $versioned $canonical_original)
   echo
 
 done
