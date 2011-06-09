@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# requires gnu readlink
+# brew install coreutils
+
 NOW=`date +%s`
 PWD=`pwd`
 shopt -s nullglob
@@ -11,11 +14,11 @@ for file in `find .`; do
   if [[ $file =~ .git/ ]]; then continue; fi
   if [[ $file =~ .gitignore ]]; then continue; fi
 
-  versioned=$(readlink "$file")
+  versioned=$(greadlink -f "$file")
   echo "Checking $versioned"
 
   original=${versioned/#$PWD/~}
-  canonical_original=$(readlink "$original")
+  canonical_original=$(greadlink -m "$original")
 
   if [[ $versioned == $canonical_original ]]; then
     echo "Symlink already installed."
@@ -27,17 +30,16 @@ for file in `find .`; do
     # should show a diff and give the option of bailing
     backup="$canonical_original.$NOW.bak"
     echo "Moving $canonical_original to $backup"
-    #$(mv $canonical_original $backup)
+    $(mv $canonical_original $backup)
   fi
 
   dir=$(dirname $canonical_original)
   if [[ -d $dir ]]; then
-    echo ""
-    #$(mkdir -p $dir)
+    $(mkdir -p $dir)
   fi
 
   echo "Linking $canonical_original to $versioned"
-  #$(ln -s $versioned $canonical_original)
+  $(ln -s $versioned $canonical_original)
   echo
 
 done
