@@ -8,6 +8,9 @@
 # VI mode baby
 set -o vi
 
+# put brew packages ahead in the path
+export PATH=/usr/local/bin:$PATH
+
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
