@@ -59,6 +59,8 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+# brew completion
+source `brew --prefix`/Library/Contributions/brew_bash_completion.sh
 function _git_prompt() {
     local git_status="`git status -unormal 2>&1`"
     if ! [[ "$git_status" =~ Not\ a\ git\ repo ]]; then
